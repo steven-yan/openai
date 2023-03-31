@@ -192,6 +192,15 @@ class OpenAINetworkingClient {
     OpenAILogger.log("starting request to $to");
     client.send(request).then(
       (respond) {
+        if (respond.statusCode > 299) {
+          controller.addError(RequestFailedException(
+            "Request failed with status code ${respond.statusCode}",
+            respond.statusCode,
+          ));
+          close();
+          return;
+        }
+
         OpenAILogger.log("Starting to reading stream response");
 
         final stream = respond.stream
