@@ -193,11 +193,13 @@ class OpenAINetworkingClient {
     client.send(request).then(
       (respond) {
         if (respond.statusCode > 299) {
-          controller.addError(RequestFailedException(
-            "Request failed with status code ${respond.statusCode}",
-            respond.statusCode,
-          ));
-          close();
+          respond.stream.bytesToString().then((value) {
+            controller.addError(RequestFailedException(
+              "${respond.reasonPhrase}: ",
+              respond.statusCode,
+            ));
+          }).whenComplete(close);
+
           return;
         }
 
