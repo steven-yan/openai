@@ -373,7 +373,12 @@ class OpenAINetworkingClient {
     OpenAILogger.log("response body decoded successfully");
     if (decodedBody['error'] != null) {
       OpenAILogger.log("an error occurred, throwing exception");
-      final Map<String, dynamic> error = decodedBody['error'];
+      Map<String, dynamic> error = {};
+      if (decodedBody['error'] is String) {
+        error['message'] = decodedBody['error'];
+      } else {
+        error = decodedBody['error'];
+      }
       throw RequestFailedException(
         error["message"],
         response.statusCode,
