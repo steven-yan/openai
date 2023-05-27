@@ -17,6 +17,8 @@ abstract class HeadersBuilder {
   /// {@endtemplate}
   static String? _organization;
 
+  static Map<String, String> _externalHeaders = <String, String>{};
+
   /// {@macro headers_builder_organization}
   @internal
   static String? get organization => _organization;
@@ -27,6 +29,11 @@ abstract class HeadersBuilder {
   /// {@macro headers_builder_api_key}
   @internal
   static String? get apiKey => _apiKey;
+
+  @internal
+  static set externalHeaders(Map<String, String> headers) {
+    _externalHeaders = headers;
+  }
 
   @internal
   static set organization(String? organizationId) {
@@ -51,6 +58,10 @@ abstract class HeadersBuilder {
     final Map<String, String> headers = <String, String>{
       'Content-Type': 'application/json',
     };
+
+    if (_externalHeaders.isNotEmpty) {
+      headers.addAll(_externalHeaders);
+    }
 
     assert(
       apiKey != null,
