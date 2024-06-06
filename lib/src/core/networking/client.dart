@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dart_openai/src/core/utils/http_client_web.dart'
-    if (dart.library.io) 'package:dart_openai/src/core/utils/http_client_io.dart';
+if (dart.library.io) 'package:dart_openai/src/core/utils/http_client_io.dart';
 import 'package:dart_openai/openai.dart';
 import 'package:dart_openai/src/core/builder/headers.dart';
 import 'package:dart_openai/src/core/utils/logger.dart';
@@ -32,8 +32,8 @@ class OpenAINetworkingClient {
     OpenAILogger.log("starting decoding response body");
     Utf8Decoder utf8decoder = Utf8Decoder();
     final Map<String, dynamic> decodedBody =
-        jsonDecode(utf8decoder.convert(response.bodyBytes))
-            as Map<String, dynamic>;
+    jsonDecode(utf8decoder.convert(response.bodyBytes))
+    as Map<String, dynamic>;
 
     OpenAILogger.log("response body decoded successfully");
 
@@ -70,7 +70,7 @@ class OpenAINetworkingClient {
         final String data = utf8.decode(value);
 
         final List<String> dataLines =
-            data.split("\n").where((element) => element.isNotEmpty).toList();
+        data.split("\n").where((element) => element.isNotEmpty).toList();
 
         for (String line in dataLines) {
           if (line.startsWith("data: ")) {
@@ -114,8 +114,8 @@ class OpenAINetworkingClient {
     OpenAILogger.log("starting decoding response body");
     Utf8Decoder utf8decoder = Utf8Decoder();
     final Map<String, dynamic> decodedBody =
-        jsonDecode(utf8decoder.convert(response.bodyBytes))
-            as Map<String, dynamic>;
+    jsonDecode(utf8decoder.convert(response.bodyBytes))
+    as Map<String, dynamic>;
     OpenAILogger.log("response body decoded successfully");
 
     if (decodedBody['error'] != null) {
@@ -191,13 +191,12 @@ class OpenAINetworkingClient {
 
     OpenAILogger.log("starting request to $to");
     client.send(request).then(
-      (respond) {
+          (respond) {
         if (respond.statusCode > 299) {
           respond.stream.bytesToString().then((value) {
-            controller.addError(RequestFailedException(
-              "${respond.reasonPhrase}: ",
-              respond.statusCode,
-            ));
+            controller.addError(
+                RequestFailedException(value, respond.statusCode,)
+            );
           }).whenComplete(close);
 
           return;
@@ -210,7 +209,7 @@ class OpenAINetworkingClient {
             .transform(const LineSplitter());
 
         stream.listen(
-          (value) {
+              (value) {
             final data = value;
 
             final List<String> dataLines = data
@@ -272,7 +271,7 @@ class OpenAINetworkingClient {
     );
     request.headers.addAll(HeadersBuilder.build());
     final http.MultipartFile file =
-        await http.MultipartFile.fromPath("image", image.path);
+    await http.MultipartFile.fromPath("image", image.path);
 
     final http.MultipartFile? maskFile = mask != null
         ? await http.MultipartFile.fromPath("mask", mask.path)
@@ -288,7 +287,7 @@ class OpenAINetworkingClient {
     OpenAILogger.log("starting decoding response body");
     final String encodedBody = await response.stream.bytesToString();
     final Map<String, dynamic> decodedBody =
-        jsonDecode(encodedBody) as Map<String, dynamic>;
+    jsonDecode(encodedBody) as Map<String, dynamic>;
     OpenAILogger.log("response body decoded successfully");
     if (decodedBody['error'] != null) {
       OpenAILogger.log("an error occurred, throwing exception");
@@ -317,7 +316,7 @@ class OpenAINetworkingClient {
     );
     request.headers.addAll(HeadersBuilder.build());
     final http.MultipartFile imageFile =
-        await http.MultipartFile.fromPath("image", image.path);
+    await http.MultipartFile.fromPath("image", image.path);
     request.files.add(imageFile);
     final http.StreamedResponse response = await request.send();
     OpenAILogger.log(
@@ -326,7 +325,7 @@ class OpenAINetworkingClient {
     OpenAILogger.log("starting decoding response body");
     final String encodedBody = await response.stream.bytesToString();
     final Map<String, dynamic> decodedBody =
-        jsonDecode(encodedBody) as Map<String, dynamic>;
+    jsonDecode(encodedBody) as Map<String, dynamic>;
     OpenAILogger.log("response body decoded successfully");
     if (decodedBody['error'] != null) {
       OpenAILogger.log("an error occurred, throwing exception");
@@ -355,7 +354,7 @@ class OpenAINetworkingClient {
     request.headers.addAll(HeadersBuilder.build());
 
     final http.MultipartFile multiPartFile =
-        await http.MultipartFile.fromPath("file", file.path);
+    await http.MultipartFile.fromPath("file", file.path);
 
     request.files.add(multiPartFile);
     request.fields.addAll(body);
@@ -368,7 +367,7 @@ class OpenAINetworkingClient {
 
     final String encodedBody = await response.stream.bytesToString();
     final Map<String, dynamic> decodedBody =
-        jsonDecode(encodedBody) as Map<String, dynamic>;
+    jsonDecode(encodedBody) as Map<String, dynamic>;
 
     OpenAILogger.log("response body decoded successfully");
     if (decodedBody['error'] != null) {
@@ -405,7 +404,7 @@ class OpenAINetworkingClient {
 
     OpenAILogger.log("starting decoding response body");
     final Map<String, dynamic> decodedBody =
-        jsonDecode(response.body) as Map<String, dynamic>;
+    jsonDecode(response.body) as Map<String, dynamic>;
     OpenAILogger.log("response body decoded successfully");
     if (decodedBody['error'] != null) {
       OpenAILogger.log("an error occurred, throwing exception");

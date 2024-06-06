@@ -10,3 +10,5 @@ env.g.dart
 .env
 *.mp3
 *.png
+
+.idea/
